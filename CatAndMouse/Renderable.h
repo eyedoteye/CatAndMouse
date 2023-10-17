@@ -5,6 +5,17 @@
 
 #define SCALE 32
 
+struct Color {
+	int r;
+	int g;
+	int b;
+	Color(int r, int g, int b) {
+		Color::r = r;
+		Color::g = g;
+		Color::b = b;
+	}
+};
+
 class Renderable : public MapEntity
 {
 public:
@@ -15,11 +26,6 @@ public:
 
 class ColorRect : public Renderable {
 public:
-	struct Color {
-		int r;
-		int g;
-		int b;
-	};
 	ColorRect(int x, int y, int width, int height, Color color);
 	~ColorRect(void) {};
 	void render(SDL_Renderer*);

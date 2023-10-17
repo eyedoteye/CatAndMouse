@@ -1,9 +1,8 @@
 #include "Renderable.h"
 
-ColorRect::ColorRect(int x, int y, int width, int height, Color color) : Renderable(x,y) {
+ColorRect::ColorRect(int x, int y, int width, int height, Color color) : Renderable(x,y), color(color) {
 	ColorRect::width = width;
 	ColorRect::height = height;
-	ColorRect::color = color;
 }
 
 void ColorRect::render(SDL_Renderer* renderer) {

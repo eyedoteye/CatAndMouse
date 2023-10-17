@@ -1,6 +1,7 @@
 #include "SDL.h"
 #include "Renderable.h"
 #include <stdio.h>
+#include <vector>
 
 #define MAZE_WIDTH 16
 #define MAZE_HEIGHT 16
@@ -68,11 +69,24 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	ColorRect::Color color;
-	color.r = 0;
-	color.g = 0;
-	color.b = 255;
-	ColorRect colorRect(0,0,1,1,color);
+	std::vector<Renderable*> renderableEntities;
+	renderableEntities.reserve(10);
+
+	ColorRect c1(
+		0, 0,
+		1, 1,
+		Color(0, 0, 255)
+	);
+
+	ColorRect c2(
+		0, 1,
+		1, 1,
+		Color(255, 0, 255)
+	);
+
+	renderableEntities.push_back(&c1);
+	renderableEntities.push_back(&c2);
+
 
 	loadMedia();
 
@@ -81,7 +95,9 @@ int main(int argc, char *argv[])
 		SDL_SetRenderDrawColor(app.renderer, 0, 255, 0, 255);
 		SDL_RenderClear(app.renderer);
 
-		colorRect.render(app.renderer);
+		for (Renderable* r : renderableEntities) {
+			r->render(app.renderer);
+		}
 
 		SDL_RenderPresent(app.renderer);
 
