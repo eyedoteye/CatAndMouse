@@ -1,6 +1,7 @@
 #include "SDL.h"
 #include "Renderable.h"
 #include "Map.h"
+#include "Mouse.h"
 #include <stdio.h>
 #include <vector>
 #include <cstdlib>
@@ -64,6 +65,8 @@ void doInput(void) {
 	}
 }
 
+enum GameState {generatingMap, playing, finished};
+
 int main(int argc, char *argv[])
 {
 	srand(time(0));
@@ -74,8 +77,12 @@ int main(int argc, char *argv[])
 
 	std::list<Renderable*> renderableEntities;
 
+	GameState state = GameState::generatingMap;
+
 	Map map;
 	map.generateInit();
+
+	Mouse* mouse = nullptr;
 
 	loadMedia();
 
@@ -85,14 +92,35 @@ int main(int argc, char *argv[])
 		SDL_SetRenderDrawColor(app.renderer, 0, 255, 0, 255);
 		SDL_RenderClear(app.renderer);
 
-		map.generateStep();
-		std::list <MapEntity*> entities = map.getAll();
-		renderableEntities.clear();
-		for (MapEntity* m : entities) {
-			Renderable* r = dynamic_cast<Renderable*>(m);
-			if (r != NULL) {
-				renderableEntities.push_back(r);
+
+		bool doneGenerating = false;
+		switch (state) {
+		case GameState::generatingMap:
+			doneGenerating = !map.generateStep();
+			
+			renderableEntities.clear();
+			for (MapEntity* m : map.getAll()) {
+				Renderable* r = dynamic_cast<Renderable*>(m);
+				if (r != NULL) {
+					renderableEntities.push_back(r);
+				}
 			}
+
+			if (doneGenerating) {
+				state = GameState::playing;
+				std::list<Position> endPoints = map.getEndPoints();
+				Position p = endPoints.back();
+				mouse = new Mouse(&map, p.x, p.y);
+				Renderable* r = dynamic_cast<Renderable*>(mouse);
+				if (r != NULL) {
+					renderableEntities.push_back(r);
+				}
+			}
+
+			
+			break;
+		case GameState::playing:
+			mouse->step();
 		}
 
 		for (Renderable* r : renderableEntities) {

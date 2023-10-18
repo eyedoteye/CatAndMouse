@@ -19,3 +19,7 @@ bool MapEntity::setPos(int x, int y) {
 	MapEntity::y = y;
 	return true;
 }
+
+bool MapEntity::setPos(Position p) {
+	return setPos(p.x, p.y);
+}

@@ -17,6 +17,7 @@ public:
 	MapEntity(int x, int y);
 	Position getPos();
 	bool setPos(int x, int y);
+	bool setPos(Position p);
 	virtual void update(float deltaT) {
 		return;
 	}

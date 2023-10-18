@@ -134,11 +134,16 @@
     <ClCompile Include="Map.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapEntity.cpp" />
+    <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Navigator.cpp" />
     <ClCompile Include="Renderable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapEntity.h" />
+    <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Navigator.h" />
     <ClInclude Include="Renderable.h" />
+    <ClInclude Include="Steppable.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

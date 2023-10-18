@@ -13,16 +13,19 @@
 class Map {
 public:
 	void generateInit(void);
-	void generateStep(void);
+	bool generateStep(void);
 	MapEntity* get(int x, int y);
+	MapEntity* get(Position p);
 	bool add(MapEntity* mapEntity);
 	void erase(int x, int y);
+	void erase(Position p);
 	std::list<MapEntity*> getAll();
+	bool isInBounds(int x, int y);
+	bool isInBounds(Position p);
+	std::list<Position> getEndPoints();
 private:
 	std::map<Position, MapEntity*> entities;
 	std::map<Position, bool> visited;
 	std::stack<Position> cellStack;
-	bool isInBounds(int x, int y);
-	bool isInBounds(Position p);
-	bool erasePositionFromOpenCells(Position p);
+	std::list<Position> endPoints;
 };
