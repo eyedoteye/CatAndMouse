@@ -16,7 +16,7 @@ struct Color {
 	}
 };
 
-class Renderable : public MapEntity
+class Renderable : virtual public MapEntity
 {
 public:
 	Renderable(int x, int y) : MapEntity(x, y) {};
@@ -24,7 +24,7 @@ public:
 	virtual void render(SDL_Renderer*) = 0;
 };
 
-class ColorRect : public Renderable {
+class ColorRect : virtual public Renderable {
 public:
 	ColorRect(int x, int y, int width, int height, Color color);
 	~ColorRect(void) {};

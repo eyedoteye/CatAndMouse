@@ -1,6 +1,6 @@
 #include "Renderable.h"
 
-ColorRect::ColorRect(int x, int y, int width, int height, Color color) : Renderable(x,y), color(color) {
+ColorRect::ColorRect(int x, int y, int width, int height, Color color) : MapEntity(x, y), Renderable(x,y), color(color) {
 	ColorRect::width = width;
 	ColorRect::height = height;
 }

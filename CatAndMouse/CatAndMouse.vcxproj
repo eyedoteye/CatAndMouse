@@ -130,6 +130,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Map.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapEntity.cpp" />
     <ClCompile Include="Renderable.cpp" />
@@ -137,6 +139,7 @@
   <ItemGroup>
     <ClInclude Include="MapEntity.h" />
     <ClInclude Include="Renderable.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

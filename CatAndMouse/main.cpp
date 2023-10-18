@@ -1,10 +1,12 @@
 #include "SDL.h"
 #include "Renderable.h"
+#include "Map.h"
 #include <stdio.h>
 #include <vector>
+#include <cstdlib>
+#include <list>
+#include <time.h>
 
-#define MAZE_WIDTH 16
-#define MAZE_HEIGHT 16
 #define SCREEN_WIDTH SCALE * MAZE_WIDTH
 #define SCREEN_HEIGHT SCALE * MAZE_HEIGHT
 
@@ -64,36 +66,34 @@ void doInput(void) {
 
 int main(int argc, char *argv[])
 {
+	srand(time(0));
 
 	if (!initSDL()) {
 		exit(1);
 	}
 
-	std::vector<Renderable*> renderableEntities;
-	renderableEntities.reserve(10);
+	std::list<Renderable*> renderableEntities;
 
-	ColorRect c1(
-		0, 0,
-		1, 1,
-		Color(0, 0, 255)
-	);
-
-	ColorRect c2(
-		0, 1,
-		1, 1,
-		Color(255, 0, 255)
-	);
-
-	renderableEntities.push_back(&c1);
-	renderableEntities.push_back(&c2);
-
+	Map map;
+	map.generateInit();
 
 	loadMedia();
 
 	while (1) {
 		doInput();
+
 		SDL_SetRenderDrawColor(app.renderer, 0, 255, 0, 255);
 		SDL_RenderClear(app.renderer);
+
+		map.generateStep();
+		std::list <MapEntity*> entities = map.getAll();
+		renderableEntities.clear();
+		for (MapEntity* m : entities) {
+			Renderable* r = dynamic_cast<Renderable*>(m);
+			if (r != NULL) {
+				renderableEntities.push_back(r);
+			}
+		}
 
 		for (Renderable* r : renderableEntities) {
 			r->render(app.renderer);
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 
 		SDL_RenderPresent(app.renderer);
 
-		SDL_Delay(16);
+		SDL_Delay(50);
 	}
 
 	return 0;
