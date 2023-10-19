@@ -45,6 +45,7 @@ bool Map::generateStep() {
 		return visited.find(p) == visited.end();
 	};
 
+	int adjacentCount = 0;
 	Position neighbor;
 	Position betweenNeighbor;
 
@@ -54,12 +55,19 @@ bool Map::generateStep() {
 		betweenNeighbors[neighborsSize] = betweenNeighbor;
 		neighbors[neighborsSize++] = neighbor;
 	}
+	if (get(betweenNeighbor) == NULL) {
+		adjacentCount++;
+	}
+
 
 	neighbor = Position(pT.x + 2, pT.y); // Right
 	betweenNeighbor = Position(pT.x + 1, pT.y);
 	if (isInBounds(neighbor) && positionNotInVisited(neighbor)) {
 		betweenNeighbors[neighborsSize] = betweenNeighbor;
 		neighbors[neighborsSize++] = neighbor;
+	}
+	if (get(betweenNeighbor) == NULL) {
+		adjacentCount++;
 	}
 
 	neighbor = Position(pT.x, pT.y - 2); // Up
@@ -68,12 +76,18 @@ bool Map::generateStep() {
 		betweenNeighbors[neighborsSize] = betweenNeighbor;
 		neighbors[neighborsSize++] = neighbor;
 	}
+	if (get(betweenNeighbor) == NULL) {
+		adjacentCount++;
+	}
 
 	neighbor = Position(pT.x, pT.y + 2); // Down
 	betweenNeighbor = Position(pT.x, pT.y + 1);
 	if (isInBounds(neighbor) && positionNotInVisited(neighbor)) {
 		betweenNeighbors[neighborsSize] = betweenNeighbor;
 		neighbors[neighborsSize++] = neighbor;
+	}
+	if (get(betweenNeighbor) == NULL) {
+		adjacentCount++;
 	}
 
 
@@ -84,14 +98,18 @@ bool Map::generateStep() {
 		visited[pT] = true;
 		Position pBN = betweenNeighbors[randNeighborIndex];
 		erase(pBN.x, pBN.y);
-		printf("pT(%i,%i) marked as visited.\n", pT.x, pT.y);
+		//printf("pT(%i,%i) marked as visited.\n", pT.x, pT.y);
 		pT = neighbors[randNeighborIndex];
 		cellStack.push(pT);
 	}
 	else {
 		visited[pT] = true;
 		printf("End reached at pT(%i,%i).\n", pT.x, pT.y);
-		endPoints.push_back(pT);
+		printf("adjacentCount: %i\n", adjacentCount);
+		if (adjacentCount == 1) {
+			endPoints.push_back(pT);
+			printf("True endpoint reached.\n");
+		}
 	}
 
 	return true;
@@ -120,11 +138,16 @@ void Map::erase(Position p) {
 }
 
 MapEntity* Map::get(int x, int y) {
-	return entities[Position(x, y)];
+	return get(Position(x, y));
 }
 
 MapEntity* Map::get(Position p) {
-	return get(p.x, p.y);
+	auto iter = entities.find(p);
+	if (iter == entities.end()) {
+		return nullptr;
+	}
+
+	return iter->second;
 }
 
 std::list<MapEntity*> Map::getAll() {

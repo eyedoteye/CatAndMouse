@@ -56,5 +56,11 @@
     <ClInclude Include="Steppable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Cheese.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

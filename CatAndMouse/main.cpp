@@ -2,6 +2,7 @@
 #include "Renderable.h"
 #include "Map.h"
 #include "Mouse.h"
+#include "Cheese.h"
 #include <stdio.h>
 #include <vector>
 #include <cstdlib>
@@ -83,6 +84,7 @@ int main(int argc, char *argv[])
 	map.generateInit();
 
 	Mouse* mouse = nullptr;
+	Cheese* cheese = nullptr;
 
 	loadMedia();
 
@@ -108,19 +110,48 @@ int main(int argc, char *argv[])
 
 			if (doneGenerating) {
 				state = GameState::playing;
+
+
 				std::list<Position> endPoints = map.getEndPoints();
+
 				Position p = endPoints.back();
 				mouse = new Mouse(&map, p.x, p.y);
+
+				endPoints.pop_back();
+
+				p = endPoints.back();
+				cheese = new Cheese(&map, p.x, p.y);
+
+
 				Renderable* r = dynamic_cast<Renderable*>(mouse);
 				if (r != NULL) {
 					renderableEntities.push_back(r);
 				}
+
+				r = dynamic_cast<Renderable*>(cheese);
+				if (r != NULL) {
+					renderableEntities.push_back(r);
+				}
+
 			}
 
 			
 			break;
 		case GameState::playing:
-			mouse->step();
+			if (mouse->getPos() == cheese->getPos()) {
+				printf("Mouse wins.\n");
+				auto isCheese = [](Renderable* r) {
+					Cheese* c = dynamic_cast<Cheese*>(r);
+					return c != nullptr;
+				};
+				renderableEntities.remove_if(isCheese);
+				delete cheese;
+				state = GameState::finished;
+			}
+			else
+			{
+				mouse->step();
+			}
 		}
 
 		for (Renderable* r : renderableEntities) {

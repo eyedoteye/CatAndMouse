@@ -6,8 +6,11 @@
 
 class Mouse : public Steppable, public ColorRect {
 public:
-	Mouse(Map* m, int x, int y) : MapEntity(x, y), Renderable(x, y), ColorRect(x, y, 1, 1, Color(255, 0, 255)), map(m) {};
+	Mouse(Map* m, int x, int y) : MapEntity(x, y), Renderable(x, y), ColorRect(x, y, 1, 1, Color(150, 75, 0)), map(m) {
+		lastPosition = Position(x, y);
+	};
 	void step();
 private:
 	Map* map;
+	Position lastPosition;
 };

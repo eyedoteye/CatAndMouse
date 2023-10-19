@@ -139,6 +139,8 @@
     <ClCompile Include="Renderable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cat.h" />
+    <ClInclude Include="Cheese.h" />
     <ClInclude Include="MapEntity.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Navigator.h" />
