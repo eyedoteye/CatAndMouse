@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cat.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Map.h" />
     <ClCompile Include="main.cpp" />

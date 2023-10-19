@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "Mouse.h"
 #include "Cheese.h"
+#include "Cat.h"
 #include <stdio.h>
 #include <vector>
 #include <cstdlib>
@@ -85,6 +86,7 @@ int main(int argc, char *argv[])
 
 	Mouse* mouse = nullptr;
 	Cheese* cheese = nullptr;
+	Cat* cat = nullptr;
 
 	loadMedia();
 
@@ -122,6 +124,10 @@ int main(int argc, char *argv[])
 				p = endPoints.back();
 				cheese = new Cheese(&map, p.x, p.y);
 
+				endPoints.pop_back();
+
+				p = endPoints.back();
+				cat = new Cat(&map, p.x, p.y, mouse);
 
 				Renderable* r = dynamic_cast<Renderable*>(mouse);
 				if (r != NULL) {
@@ -133,11 +139,21 @@ int main(int argc, char *argv[])
 					renderableEntities.push_back(r);
 				}
 
+				r = dynamic_cast<Renderable*>(cat);
+				if (r != NULL) {
+					renderableEntities.push_back(r);
+				}
+
 			}
 
 			
 			break;
 		case GameState::playing:
+			Position mousePos = mouse->getPos();
+			Position catPos = cat->getPos();
+			int xDist = catPos.x - mousePos.x;
+			int yDist = catPos.y - mousePos.y;
+			int distSqrd = xDist * xDist + yDist * yDist;
 			if (mouse->getPos() == cheese->getPos()) {
 				printf("Mouse wins.\n");
 				auto isCheese = [](Renderable* r) {
@@ -148,9 +164,20 @@ int main(int argc, char *argv[])
 				delete cheese;
 				state = GameState::finished;
 			}
+			else if (distSqrd <= 2) {
+				printf("Cat wins.\n");
+				auto isMouse = [](Renderable* r) {
+					Mouse* m = dynamic_cast<Mouse*>(r);
+					return m != nullptr;
+					};
+				renderableEntities.remove_if(isMouse);
+				delete mouse;
+				state = GameState::finished;
+			}
 			else
 			{
 				mouse->step();
+				cat->step();
 			}
 		}
 

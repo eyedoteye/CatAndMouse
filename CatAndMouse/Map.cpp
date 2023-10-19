@@ -104,8 +104,8 @@ bool Map::generateStep() {
 	}
 	else {
 		visited[pT] = true;
-		printf("End reached at pT(%i,%i).\n", pT.x, pT.y);
-		printf("adjacentCount: %i\n", adjacentCount);
+		//printf("End reached at pT(%i,%i).\n", pT.x, pT.y);
+		//printf("adjacentCount: %i\n", adjacentCount);
 		if (adjacentCount == 1) {
 			endPoints.push_back(pT);
 			printf("True endpoint reached.\n");
